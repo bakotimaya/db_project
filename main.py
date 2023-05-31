@@ -59,8 +59,13 @@ def view_bookings():
 
 def add_Customer(first_name, surname, postcode, house_number, phone_number):
     statement="INSERT INTO Customer VALUES(NULL,?,?,?,?,?)"  
-    cursor.execute(statement, (first_name, surname, postcode, house_number, phone_number))
+    success = cursor.execute(statement, (first_name, surname, postcode, house_number, phone_number))
     connection.commit()
+    if success:
+        print("Customer added!")
+        result = cursor.fetchone()
+        return result
+    
 
 def view_Customer():
     statement="SELECT * FROM Customer"
@@ -110,15 +115,31 @@ def main():
     cursor.execute(Customer_tbl)
     cursor.execute(Bouncycastle_tbl)
     cursor.execute(Booking_tbl)
-    print("done")
-    add_Customer("Steve", "Jobs", "M409WJ", 29, 987976987)
+    print("Initialised database")
+    print("------------")
+    print("Customer list")
     view_Customer()
-    add_Customer("John", "Jobs", "M171SB", 30, 987976987)
-    view_Customer()
-    delete_Customer(1)
-    view_Customer()
-    add_Bouncycastle("BouncyCastle1", 16, "Blue", 12, 50, "10/05/2023")
+    print("bouncecastle list")
     view_Bouncycastle()
+    # get the customer details
+    add_c = input("add a customer? (y/n) ")
+    if add_c=='y':
+        f_name = input("First name? ")
+        surname = input("Surname? ") 
+        postcode = input("Customer postcode? ")
+        age = input("Age? ")
+        phone = input("Phone number? ")
+        # add to database
+        customer = add_Customer(f_name, surname, postcode, age, phone)
+        print("customer details")
+        print(customer)
+
+ 
+    
+    castle_name  = input("What is the castle name? ")
+
+    add_Bouncycastle(castle_name, 16, "Blue", 12, 50, "10/05/2023")
+    
     customer_id = 1
     Bouncycastle_id = 1
     Book_date = '10/05/2023'
